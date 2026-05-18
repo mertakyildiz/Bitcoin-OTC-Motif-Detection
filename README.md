@@ -10,7 +10,7 @@ The architecture is mathematically backed by the state-of-the-art literature on 
 *   'soc-sign-bitcoinotc.csv': The raw temporal network dataset (from Stanford SNAP). Formatted as: `[source, target, rating, time]`.
 *   'otc_gt.csv': The verified ground truth labels. Contains verified benign (`1`) and fraudulent (`-1`) nodes.
 
-### Pipeline Scripts
+### Pipeline Scripts                                                                                                
 *   'inter_event_time.py': Calculates the empirical rhythm of the network.
 *   'temp_motif_deg_vec.py': The core feature extraction engine. 
 *   'model_training.py': The machine learning classifier.
@@ -35,7 +35,7 @@ Run 'model_training.py'.
 This script merges the extracted feature matrix with the 'otc_gt.csv' ground truth. It trains a Random Forest Classifier using 5-Fold GridSearchCV. It performs automated threshold optimization to maximize the F1-Score against "camouflaged" fraudsters and outputs the Feature Importance plot to reveal the dominant malicious motifs (e.g. retaliatory "Ping-Pongs").
 
 ### Step 4: Evaluate with the Ablation Study
-Run 'ablation_study.py'.
+Run 'feature_fusion_analysis.py'.
 This script computes three "Simple Graph Features" (s_u total volume, s_u^{out}/s_u out-ratio, and k_u node degree). It evaluates the classifier's performance using "Motifs Only" versus "Motifs + Simple Graph" to demonstrate the predictive boost provided by contextual network statistics.
 
 ---
