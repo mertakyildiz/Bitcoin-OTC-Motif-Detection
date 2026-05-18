@@ -52,5 +52,5 @@ def evaluate(features_list, name):
     return {'Model': name, 'ROC AUC': roc_auc, 'Peak F1': f1_scores[opt_idx]}
 
 
-print("--- ABLATION STUDY ---")
+print("--- Feature fusion study ---")
 print(pd.DataFrame([evaluate(motifs_cols, "Motifs Only"), evaluate(combined_cols, "Motifs + Simple Graph")]))

@@ -1,9 +1,8 @@
 import pandas as pd
 import inter_event_time
 
-# ==========================================
-# 1. LOAD DATA & GROUND TRUTH
-# ==========================================
+
+# Load data and ground truth
 print("Loading network data")
 df = pd.read_csv('soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
 
@@ -15,9 +14,7 @@ verified_users = set(gt_df['node'])
 DELTA_C = inter_event_time.delta_c_hours_round_in_sec
 
 
-# ==========================================
-# 2. EGOCENTRIC EVENT-PAIR EXTRACTOR
-# ==========================================
+# Egocentric event-pair extraction
 def extract_normalized_motifs(target_user, network_df, delta_c):
     """
     Extracts 2-event motifs for a 1-hop egocentric network and applies the
@@ -93,9 +90,7 @@ def extract_normalized_motifs(target_user, network_df, delta_c):
     return features
 
 
-# ==========================================
-# 3. EXECUTE PIPELINE
-# ==========================================
+# Execute pipeline
 print(f"Extracting normalized features for {len(verified_users)} verified users")
 results = []
 
@@ -110,9 +105,7 @@ all_features_df = all_features_df[['node', 'out_burst', 'in_burst', 'ping_pong',
                                    'weakly_connected']]
 
 
-# ==========================================
-# 4. SAVE FINAL MATRIX
-# ==========================================
+# Save final matrix
 
 all_features_df.to_csv('extracted_motifs_X.csv', index=False)
 print(f"-> Saved 'extracted_motifs_X.csv' ({len(all_features_df)} rows)")

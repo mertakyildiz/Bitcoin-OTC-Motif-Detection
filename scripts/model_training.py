@@ -11,9 +11,7 @@ from sklearn.metrics import (
     RocCurveDisplay
 )
 
-# ==========================================
-# 1. LOAD AND PREPARE DATA
-# ==========================================
+# Load and prepare data
 X_df = pd.read_csv('extracted_motifs_X.csv')
 gt_df = pd.read_csv('otc_gt.csv', names=['node', 'label'])
 
@@ -28,10 +26,9 @@ y = model_data['is_fraud']
 # Train/test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
 
-# ==========================================
-# 2. HYPERPARAMETER TUNING (GridSearchCV)
-# ==========================================
-print("\nInitiating 5-Fold Grid Search Cross-Validation...")
+
+# Hyperparameter tuning (GridSearchCV)
+print("Initiating 5-Fold Grid Search Cross-Validation")
 
 param_grid = {
     'n_estimators': [100, 200, 300],
@@ -53,18 +50,17 @@ grid_search = GridSearchCV(
 
 grid_search.fit(X_train, y_train)
 best_rf = grid_search.best_estimator_
-print(f"\nOptimal Parameters Found: {grid_search.best_params_}")
+print(f"Optimal Parameters Found: {grid_search.best_params_}")
 
-# ==========================================
-# 3. THRESHOLD OPTIMIZATION
-# ==========================================
+
+# Threshold Optimization
 # Extract raw probabilities for the test set
 y_probs = best_rf.predict_proba(X_test)[:, 1]
 
 # Generate precision and recall arrays across all possible thresholds
 precisions, recalls, thresholds = precision_recall_curve(y_test, y_probs)
 
-# Calculate F1-Scores safely
+# Calculate F1-Scores
 with np.errstate(divide='ignore', invalid='ignore'):
     f1_scores = 2 * (precisions * recalls) / (precisions + recalls)
     f1_scores = np.nan_to_num(f1_scores)
@@ -78,9 +74,8 @@ print(f"\n=== THRESHOLD OPTIMIZATION ===")
 print(f"Algorithmically Optimal Threshold: {optimal_threshold:.4f}")
 print(f"Projected Peak F1-Score: {peak_f1:.4f}\n")
 
-# ==========================================
-# 4. FINAL EVALUATION & VISUALIZATION
-# ==========================================
+
+# Final evaluation and visualization
 # Apply the optimal threshold
 y_pred_optimal = (y_probs >= optimal_threshold).astype(int)
 
