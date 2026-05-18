@@ -1,1 +1,1 @@
-Libraries used in this project: (pandas, numpy, scikit-learn, matplotlib, seaborn)
+Libraries used in this project: (pandas, numpy, scikit-learn, matplotlib, seaborn, math)
