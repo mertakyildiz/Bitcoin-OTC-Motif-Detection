@@ -2,7 +2,7 @@ import math
 import pandas as pd
 
 # Load the dataset
-df = pd.read_csv('soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
+df = pd.read_csv('data/soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
 
 # 1. Sort strictly by time to simulate the global chronological feed
 df = df.sort_values('time').reset_index(drop=True)

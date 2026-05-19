@@ -4,10 +4,10 @@ import inter_event_time
 
 # Load data and ground truth
 print("Loading network data")
-df = pd.read_csv('soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
+df = pd.read_csv('data/soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
 
 print("Loading official ground truth (otc_gt.csv)")
-gt_df = pd.read_csv('otc_gt.csv', names=['node', 'label'])
+gt_df = pd.read_csv('data/otc_gt.csv', names=['node', 'label'])
 verified_users = set(gt_df['node'])
 
 # Empirically calculated and rounded up to the nearest hour per Liu et al.

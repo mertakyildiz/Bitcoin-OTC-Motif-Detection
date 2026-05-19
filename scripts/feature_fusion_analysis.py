@@ -1,16 +1,17 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_recall_curve, roc_auc_score
 
 # 1. Load data
-network_df = pd.read_csv('soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
-gt_df = pd.read_csv('otc_gt.csv', names=['node', 'label'])
+network_df = pd.read_csv('data/soc-sign-bitcoinotc.csv', names=['source', 'target', 'rating', 'time'])
+gt_df = pd.read_csv('data/otc_gt.csv', names=['node', 'label'])
 gt_df['is_fraud'] = gt_df['label'].apply(lambda x: 1 if x == -1 else 0)
 
 # Load the motifs-only features for the 316 users
-X_motifs_df = pd.read_csv('extracted_motifs_X.csv')
+X_motifs_df = pd.read_csv('outputs/extracted_motifs_X.csv')
 
 # 2. Calculate simple features for the 316 users
 simple_features = []
@@ -52,5 +53,49 @@ def evaluate(features_list, name):
     return {'Model': name, 'ROC AUC': roc_auc, 'Peak F1': f1_scores[opt_idx]}
 
 
+# --- Run Evaluation and Capture Results ---
+results_df = pd.DataFrame([
+    evaluate(motifs_cols, "Motifs Only"),
+    evaluate(combined_cols, "Motifs + Simple Graph")
+])
+
 print("--- Feature fusion study ---")
-print(pd.DataFrame([evaluate(motifs_cols, "Motifs Only"), evaluate(combined_cols, "Motifs + Simple Graph")]))
+print(results_df)
+
+# --- Generate the Comparison Bar Chart ---
+plt.figure(figsize=(9, 6))
+
+# Define the x-axis positions and width of the bars
+bar_width = 0.35
+index = np.arange(len(results_df['Model']))
+
+# Plot the bars
+bar1 = plt.bar(index, results_df['ROC AUC'], bar_width, label='ROC AUC', color='#005088')
+bar2 = plt.bar(index + bar_width, results_df['Peak F1'], bar_width, label='Peak F1', color='#6366f1')
+
+# Aesthetics and formatting
+plt.xlabel('Feature Set', fontweight='bold', fontsize=12)
+plt.ylabel('Score', fontweight='bold', fontsize=12)
+plt.title('Performance Uplift: Feature Fusion', fontweight='bold', fontsize=14)
+plt.xticks(index + bar_width / 2, results_df['Model'], fontsize=11)
+plt.ylim(0, 1.1) # Gives the bars breathing room at the top
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+# Add exact numbers on top of the bars
+def add_value_labels(bars):
+    for bar in bars:
+        height = bar.get_height()
+        plt.annotate(f'{height:.3f}',
+                     xy=(bar.get_x() + bar.get_width() / 2, height),
+                     xytext=(0, 5),  # 5 points vertical offset
+                     textcoords="offset points",
+                     ha='center', va='bottom', fontweight='bold')
+
+add_value_labels(bar1)
+add_value_labels(bar2)
+
+plt.tight_layout()
+
+plt.savefig('outputs/feature_fusion_comparison.png', dpi=300, bbox_inches='tight')
+print("Chart successfully saved")

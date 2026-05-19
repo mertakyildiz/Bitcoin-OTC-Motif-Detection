@@ -12,8 +12,8 @@ from sklearn.metrics import (
 )
 
 # Load and prepare data
-X_df = pd.read_csv('extracted_motifs_X.csv')
-gt_df = pd.read_csv('otc_gt.csv', names=['node', 'label'])
+X_df = pd.read_csv('outputs/extracted_motifs_X.csv')
+gt_df = pd.read_csv('data/otc_gt.csv', names=['node', 'label'])
 
 # Standardize labels: 1 = Fraud, 0 = Normal
 gt_df['is_fraud'] = gt_df['label'].apply(lambda x: 1 if x == -1 else 0)
