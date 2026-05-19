@@ -2,7 +2,7 @@ Temporal Motif-Based Fraud Detection
 
 This repository contains an end-to-end machine learning pipeline for dynamic graph anomaly detection. It identifies fraudulent users in the Bitcoin-OTC rating network based purely on temporal network motifs and acting as a "blind classifier" that completely ignores potentially manipulated rating scores. 
 
-The architecture is mathematically backed by the state-of-the-art literature on temporal network motifs and dynamic graphlets.
+The architecture is mathematically backed by the literature on temporal network motifs and dynamic graphlets.
 
 ## Repository Structure
 
@@ -14,7 +14,7 @@ The architecture is mathematically backed by the state-of-the-art literature on 
 *   'inter_event_time.py': Calculates the empirical rhythm of the network.
 *   'temp_motif_deg_vec.py': The core feature extraction engine. 
 *   'model_training.py': The machine learning classifier.
-*   'ablation_study.py': The contextual upgrade script for performance testing.
+*   'feature_fusion_analysis.py': The contextual upgrade script for performance testing.
 
 ---
 
@@ -43,6 +43,7 @@ This script computes three "Simple Graph Features" (s_u total volume, s_u^{out}/
 ## Academic References
 This pipeline synthesizes the methodologies from the following core papers:
 1. Longa et al. (2021). "An efficient procedure for mining egocentric temporal motifs." (Introduces the concept of an egocentric temporal neighborhood (ETN))
-1. Liu et al. (2023). "Temporal Motifs for Financial Networks." (Egocentric isolation, x_i normalization, simple graph feature integration).
-2. Liu et al. (2020). "Temporal Network Motifs - Models, Limitations, Evaluation." (Bypassing subgraph isomorphism via the 6-letter Event Pair alphabet).
-3. Kumar, S., et al. (2018). "REV2: Fraudulent User Prediction in Rating Platforms." (Verified ground truth labeling and addressing fraudster camouflage).
+2. Liu et al. (2023). "Temporal Motifs for Financial Networks." (Egocentric isolation, x_i normalization, simple graph feature integration).
+3. Liu et al. (2020). "Temporal Network Motifs - Models, Limitations, Evaluation." (Bypassing subgraph isomorphism via the 6-letter Event Pair alphabet).
+4. Kumar, S., et al. (2018). "REV2: Fraudulent User Prediction in Rating Platforms." (Verified ground truth labeling and addressing fraudster camouflage).
+5. Kumar, S., et al. (2016). "Edge Weight Prediction in Weighted Signed Networks" (Provide some important dynamics of Weighted Signed Networks (WSNs) and computational bottlenecks.)
